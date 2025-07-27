@@ -1,1 +1,19 @@
 <app-header-nav/>
+<main class="container-fluid p-4 p-lg-5 d-flex flex-column">
+  <div class="btn-group mb-4 mx-auto">
+    <button class="btn btn-outline-secondary">View Speeches</button>
+    <button class="btn btn-outline-secondary">Create</button>
+  </div>
+  <div class="side-bar col-12 col-md-6 col-lg-4">
+    @if (speeches$ | async; as speeches) {
+      @for (speech of speeches; track speech.id) {
+        <div class="">
+          <h4 id="speech-title">{{ speech.title }}</h4>
+          <p class="mb-1"><strong>By: </strong> {{ speech.author }}</p>
+          <small>{{ speech.date }}</small>
+          <p class="mb-1"> {{ speech.content }} </p>
+        </div>
+      }
+    }
+  </div>
+</main>

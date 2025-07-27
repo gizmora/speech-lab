@@ -1,0 +1,13 @@
+@use "bootstrap/scss/bootstrap" as *;
+
+#speech-title {
+  font-size: 2rem;
+
+  @include media-breakpoint-down(md) {
+    font-size: 1.4rem;
+  }
+
+  @include media-breakpoint-down(sm) {
+    font-size: 1.2rem;
+  }
+}
