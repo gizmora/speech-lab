@@ -12,7 +12,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-view-speech',
   imports: [
-    HeaderNav,
     SpeechForm,
     SpeechList
   ],
@@ -27,6 +26,7 @@ export class ViewSpeech {
   private selectedSpeech = new BehaviorSubject<Speech | null>(null);
   selectedSpeech$ = this.selectedSpeech.asObservable();
   speeches: Speech[] = [];
+  speechId: number | null = null;
 
   constructor() {}
 
@@ -38,9 +38,10 @@ export class ViewSpeech {
       map(([params, speeches]) => {
         const id = +params['id'];
         const selectedSpeech = speeches.find(s => s.id === id);
-        return { speeches, selectedSpeech };
+        return { id, speeches, selectedSpeech };
       })
-    ).subscribe(({speeches, selectedSpeech}) => {
+    ).subscribe(({id, speeches, selectedSpeech}) => {
+      this.speechId = id;
       this.speeches = speeches;
       this.selectedSpeech.next(selectedSpeech || null);
     });

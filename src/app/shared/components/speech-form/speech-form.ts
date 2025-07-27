@@ -65,6 +65,7 @@ export class SpeechForm {
   onDelete() {
     const id = this.speechForm.get('id')?.value;
     confirm('Are you sure you want to delete?');
+    
     if (id) {
       this.deleteSpeech.emit(id);
     } else {

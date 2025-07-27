@@ -1,18 +1,8 @@
-<app-header-nav />
-
-<main class="container-fluid px-0">
-  <div class="d-flex justify-content-center mb-4">
-    <div class="btn-group my-4">
-      <button class="btn btn-outline-secondary">View Speeches</button>
-      <button class="btn btn-outline-secondary">Create</button>
-    </div>
+<div class="row g-0">
+  <div class="col-12 col-lg-3 pt-3 border-md-end-custom">
+    <speech-list [speeches]="speeches" [selectedId]="speechId"></speech-list>
   </div>
-  <div class="row g-0">
-    <div class="col-12 col-md-4 col-lg-3 pt-3 border-end">
-      <speech-list [speeches]="speeches"></speech-list>
-    </div>
-    <div class="col-12 col-md-8 col-lg-9 py-3 px-md-4">
-      <speech-form [speech$]="selectedSpeech$" (deleteSpeech)="deleteSpeech($event)"></speech-form>
-    </div>
+  <div class="col-12 col-lg-9 py-3 px-4">
+    <speech-form [speech$]="selectedSpeech$" (deleteSpeech)="deleteSpeech($event)"></speech-form>
   </div>
-</main>
+</div>
