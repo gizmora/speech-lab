@@ -1,5 +1,4 @@
 import { Component, inject, Input } from '@angular/core';
-import { SpeechService } from '../../../services/speech-service';
 import { Speech } from '../../../models/speech';
 import { Router } from '@angular/router';
 
@@ -10,9 +9,9 @@ import { Router } from '@angular/router';
   styleUrl: './speech-list.scss'
 })
 export class SpeechList {
-  private speechService = inject(SpeechService);
   private router = inject(Router);
   @Input() speeches: Speech[] | null = null;
+  @Input() selectedId: number | null = null;
 
   ngOnInit() {
   }
