@@ -1,19 +1,18 @@
-<app-header-nav/>
-<main class="container-fluid p-4 p-lg-5 d-flex flex-column">
-  <div class="btn-group mb-4 mx-auto">
-    <button class="btn btn-outline-secondary">View Speeches</button>
-    <button class="btn btn-outline-secondary">Create</button>
+<app-header-nav />
+
+<main class="container-fluid px-0">
+  <div class="d-flex justify-content-center mb-4">
+    <div class="btn-group my-4">
+      <button class="btn btn-outline-secondary">View Speeches</button>
+      <button class="btn btn-outline-secondary">Create</button>
+    </div>
   </div>
-  <div class="side-bar col-12 col-md-6 col-lg-4">
-    @if (speeches$ | async; as speeches) {
-      @for (speech of speeches; track speech.id) {
-        <div class="">
-          <h4 id="speech-title">{{ speech.title }}</h4>
-          <p class="mb-1"><strong>By: </strong> {{ speech.author }}</p>
-          <small>{{ speech.date }}</small>
-          <p class="mb-1"> {{ speech.content }} </p>
-        </div>
-      }
-    }
+  <div class="row g-0">
+    <div class="col-12 col-md-4 col-lg-3 pt-3 border-end">
+      <speech-list [speeches]="speeches"></speech-list>
+    </div>
+    <div class="col-12 col-md-8 col-lg-9 py-3 px-md-4">
+      <speech-form [speech$]="selectedSpeech$" (deleteSpeech)="deleteSpeech($event)"></speech-form>
+    </div>
   </div>
 </main>

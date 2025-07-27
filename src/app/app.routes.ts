@@ -4,12 +4,17 @@ import { NotFound } from './pages/not-found/not-found';
 
 export const routes: Routes = [
   {
-    path: '',
+    path: 'view-speech',
     component: ViewSpeech
   },
   {
-    path: 'view-speech',
+    path: 'view-speech/:id',
     component: ViewSpeech
+  },
+  {
+    path: '',
+    redirectTo: 'view-speech',
+    pathMatch: 'full'
   },
   {
     path: '**',
