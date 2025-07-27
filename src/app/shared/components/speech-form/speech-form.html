@@ -1,0 +1,65 @@
+<form [formGroup]="speechForm">
+  <div class="row pt-3 mb-3">
+    <label for="title" class="col-sm-2 col-form-label">Title</label>
+    <div class="col-sm-10">
+      <input
+        id="title"
+        formControlName="title"
+        class="form-control"
+        [class.is-invalid]="speechForm.get('title')?.invalid && speechForm.get('title')?.touched"
+        required
+      />
+    </div>
+  </div>
+  <div class="row mb-3">
+    <label for="author" class="col-sm-2 col-form-label">Author</label>
+    <div class="col-sm-10">
+      <input 
+        id="author" 
+        formControlName="author" 
+        class="form-control" 
+        [class.is-invalid]="speechForm.get('author')?.invalid && speechForm.get('author')?.touched"
+        required
+      />
+    </div>
+  </div>
+  <div class="row mb-3">
+    <label for="content" class="col-sm-2 col-form-label">Content</label>
+    <div class="col-sm-10">
+      <textarea
+        id="content"
+        formControlName="content"
+        class="form-control"
+        rows="8"
+        [class.is-invalid]="speechForm.get('content')?.invalid && speechForm.get('content')?.touched"
+        required
+      ></textarea>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <label for="keywords" class="col-sm-2 col-form-label">Keywords</label>
+    <div class="col-sm-6">
+      <input
+        id="keywords"
+        formControlName="keywords"
+        class="form-control"
+      />
+    </div>
+  </div>
+  <div class="row mb-3">
+    <label for="date" class="col-sm-2 col-form-label">Date</label>
+    <div class="col-sm-4">
+      <input 
+        id="date" 
+        formControlName="date" 
+        class="form-control" 
+        [class.is-invalid]="speechForm.get('date')?.invalid && speechForm.get('date')?.touched"
+      />
+    </div>
+  </div>
+  <div class="d-flex justify-content-end gap-3 mt-5">
+    <button type="submit" class="btn btn-danger" (click)="onDelete()">Delete</button>
+    <button type="submit" class="btn btn-dark"(click)="saveSpeech()" [disabled]="!speechForm.valid">Submit</button>
+    <button type="submit" class="btn btn-light" (click)="saveSpeech()" [disabled]="!speechForm.valid">Share</button>
+  </div>
+</form>
