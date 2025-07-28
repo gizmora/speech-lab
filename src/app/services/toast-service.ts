@@ -24,6 +24,6 @@ export class ToastService {
   }
 
   showInfo(body: string, header: string = 'Info', delay: number = 4000) {
-    this.show(header, body, { classname: 'bg-info text-light', delay: delay });
+    this.show(header, body, { classname: 'bg-info text-dark', delay: delay });
   }
 }

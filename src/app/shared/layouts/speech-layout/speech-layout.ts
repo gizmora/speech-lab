@@ -6,8 +6,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
   selector: 'app-speech-layout',
   imports: [
     HeaderNav,
-    RouterOutlet,
-    RouterLink,
+    RouterOutlet  
   ],
   templateUrl: './speech-layout.html',
   styleUrl: './speech-layout.scss'
