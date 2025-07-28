@@ -1,15 +1,22 @@
 <nav class="navbar navbar-expand-md border-bottom">
   <div class="container-fluid d-flex justify-content-between">
     <div class="w-md-50">
-      <a class="navbar-brand" [routerLink]="['/']" >oratora</a>
+      <a class="navbar-brand" [routerLink]="['/']" id="link-title">oratora</a>
     </div>
-    <div class="flex-md-grow-1">
-      <div class="btn-group">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navButtons" aria-controls="navButtons" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navButtons">
+      <div class="btn-group d-flex mt-2">
         <a routerLink="/view-speech" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: false }" class="btn btn-outline-dark">
           View Speeches
         </a>
-        <a routerLink="/create" routerLinkActive="active" class="btn btn-outline-dark">
+        <a routerLink="/create" routerLinkActive="active"[routerLinkActiveOptions]="{ exact: false }" class="btn btn-outline-dark">
           Create
+        </a>
+        <a routerLink="/search" routerLinkActive="active"[routerLinkActiveOptions]="{ exact: false }" class="btn btn-outline-dark">
+          Search
         </a>
       </div>
     </div>
