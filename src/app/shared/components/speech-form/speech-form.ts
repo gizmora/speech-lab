@@ -3,11 +3,14 @@ import { SpeechService } from '../../../services/speech-service';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Speech } from '../../../models/speech';
 import { Observable } from 'rxjs';
+import { NgbDatepickerModule, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { ToastService } from '../../../services/toast-service';
 
 @Component({
   selector: 'speech-form',
   imports: [
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgbDatepickerModule
   ],
   templateUrl: './speech-form.html',
   styleUrl: './speech-form.scss'
@@ -18,37 +21,70 @@ export class SpeechForm {
   
   private speechService = inject(SpeechService);
   private formBuilder = inject(FormBuilder);
+  private toastService = inject(ToastService);
 
   speechForm = this.formBuilder.group({
-      id: [null as number | null],
-      title: ['', Validators.required],
-      content: ['', Validators.required],
-      keywords: ['', Validators.required],
-      date: ['', Validators.required],
-      author: ['', Validators.required],
-      mailList: ['']
-    });
+    id: [null as number | null],
+    title: ['', Validators.required],
+    content: ['', Validators.required],
+    keywords: ['', Validators.required],
+    date: [null as NgbDateStruct | null, Validators.required],
+    author: ['', Validators.required],
+    mailList: ['', [Validators.email]]
+  });
   speechId: number | null = null;
 
   ngOnInit() {
-    this.speech$.subscribe(speech => {
-      if (speech) {
-        this.speechId = speech.id;
-        this.speechForm.patchValue(speech);
+    if (this.speech$) {
+      this.speech$.subscribe(speech => {
+        if (speech) {
+          this.speechId = speech.id;
+          this.patchForm(speech);
+        }
+      });
+    }
+  }
+
+  patchForm(speech: Speech) {
+    let dateStruct: NgbDateStruct | null = null;
+    let keywords: string = '';
+
+    if (speech.date) {
+      const parsedDate = new Date(speech.date);
+      
+      if (!isNaN(parsedDate.getTime())) {
+        dateStruct = {
+          year: parsedDate.getFullYear(),
+          month: parsedDate.getMonth() + 1,
+          day: parsedDate.getDate()
+        };
       }
+    }
+
+    if (speech.keywords) {
+      keywords = speech.keywords.join(',');
+    }
+    
+    this.speechForm.patchValue({
+      ...speech,
+      date: dateStruct,
+      keywords
     });
   }
 
-  saveSpeech() {
-    console.log(this.speechForm.value)
+  saveSpeech(type: string = 'submit') {
     if (this.speechForm.valid) {
       const formData = this.speechForm.value;
+      const dateStruct = formData.date;
+      const formattedDate = dateStruct ?`${dateStruct.year}-${dateStruct.month.toString().padStart(2, '0')}-${dateStruct.day.toString().padStart(2, '0')}` : '';
+      const keywords = formData.keywords ? formData.keywords.split(',') : [];
+    
       const updatedSpeech: Speech = {
         id: this.speechId ?? this.getNextId(),
         title: formData.title ?? '',
         content: formData.content ?? '',
-        keywords: formData.keywords ?? '',
-        date: formData.date ?? '',
+        keywords: keywords ?? [],
+        date: formattedDate ?? '',
         author: formData.author ?? '',
         mailList: formData.mailList ?? ''
       };
@@ -57,6 +93,11 @@ export class SpeechForm {
       const updatedSpeeches = this.speechId ? speeches.map(speech => speech.id === this.speechId ? updatedSpeech : speech) : ([...speeches, updatedSpeech]);
 
       this.speechService.saveToLocalStorage(updatedSpeeches);
+      if (type === 'share') {
+        this.toastService.showInfo(`Speech has been shared with ${formData.mailList}`);
+      } else {
+        this.toastService.showSuccess('Speech has been saved successfully!');
+      }
     } else {
       this.speechForm.markAllAsTouched();
     }
@@ -71,6 +112,7 @@ export class SpeechForm {
     } else {
       this.speechForm.reset();
     }
+    this.toastService.showError('Speech was deleted from the list.');
   }
 
   private getNextId(): number {
