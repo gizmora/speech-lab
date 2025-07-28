@@ -1,8 +1,20 @@
 <div class="row g-0">
-  <div class="col-12 col-lg-3 pt-3 border-md-end-custom">
+  <div 
+    class="col-12 col-lg-3 pt-3 border-md-end-custom overflow-auto" 
+    id="speech-list" 
+    [class.collapse]="!(showList$ | async)" 
+    [class.show]="(showList$ | async)"
+  >
     <speech-list [speeches]="speeches" [selectedId]="speechId"></speech-list>
   </div>
-  <div class="col-12 col-lg-9 py-3 px-4">
+  <div 
+    class="col-12 col-lg-9 py-3 px-4" 
+    [class.collapse]="(showList$ | async) && (isMobile$ | async)" 
+    [class.show]="!(showList$ | async) || !(isMobile$ | async)"
+  >
+    <div class="d-block d-lg-none">
+      <a class="btn btn-light" routerLink="/view-speech">← Back to list</a>
+    </div>
     <speech-form [speech$]="selectedSpeech$" (deleteSpeech)="deleteSpeech($event)"></speech-form>
   </div>
 </div>

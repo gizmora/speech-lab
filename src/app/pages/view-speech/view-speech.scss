@@ -2,4 +2,8 @@
   .border-md-end-custom {
     border-right: 1px solid #dee2e6;
   }
+
+  #speech-list {
+    height: calc(100vh - 56px); 
+  }
 }

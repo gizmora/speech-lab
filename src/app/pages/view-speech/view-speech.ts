@@ -1,19 +1,19 @@
 import { Component, inject } from '@angular/core';
-import { HeaderNav } from '../../shared/components/header-nav/header-nav';
-import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, debounceTime, distinctUntilChanged, fromEvent, map, Observable, startWith, Subscription } from 'rxjs';
 import { SpeechService } from '../../services/speech-service';
 import { Speech } from '../../models/speech';
-import { AsyncPipe } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SpeechForm } from '../../shared/components/speech-form/speech-form';
 import { SpeechList } from '../../shared/components/speech-list/speech-list';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-view-speech',
   imports: [
     SpeechForm,
-    SpeechList
+    SpeechList,
+    RouterLink,
+    AsyncPipe
   ],
   templateUrl: './view-speech.html',
   styleUrl: './view-speech.scss'
@@ -25,10 +25,21 @@ export class ViewSpeech {
 
   private selectedSpeech = new BehaviorSubject<Speech | null>(null);
   selectedSpeech$ = this.selectedSpeech.asObservable();
+  private readonly mobileBreakpoint = 992; 
+
   speeches: Speech[] = [];
   speechId: number | null = null;
+  isMobile$!: Observable<boolean>;
+  showList$!: Observable<boolean>;
 
-  constructor() {}
+  constructor() {
+    this.isMobile$ = fromEvent(window, 'resize').pipe(
+      debounceTime(100),
+      map(() => window.innerWidth < this.mobileBreakpoint),
+      distinctUntilChanged(),
+      startWith(window.innerWidth < this.mobileBreakpoint)
+    );
+  }
 
   ngOnInit() {
     combineLatest([
@@ -45,6 +56,18 @@ export class ViewSpeech {
       this.speeches = speeches;
       this.selectedSpeech.next(selectedSpeech || null);
     });
+
+    this.showList$ = combineLatest([
+      this.isMobile$,
+      this.selectedSpeech$
+    ]).pipe(
+      map(([isMobile, selectedSpeech]) => {
+        if (!isMobile) {
+          return true;
+        }
+        return !selectedSpeech;
+      })
+    );
   }
 
   deleteSpeech(id: number) {
