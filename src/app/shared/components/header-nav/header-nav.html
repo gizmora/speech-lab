@@ -1,5 +1,17 @@
 <nav class="navbar navbar-expand-md border-bottom">
-  <div class="container-fluid">
-    <a class="navbar-brand" [routerLink]="['/']" >oratora</a>
+  <div class="container-fluid d-flex justify-content-between">
+    <div class="w-md-50">
+      <a class="navbar-brand" [routerLink]="['/']" >oratora</a>
+    </div>
+    <div class="flex-md-grow-1">
+      <div class="btn-group">
+        <a routerLink="/view-speech" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: false }" class="btn btn-outline-dark">
+          View Speeches
+        </a>
+        <a routerLink="/create" routerLinkActive="active" class="btn btn-outline-dark">
+          Create
+        </a>
+      </div>
+    </div>
   </div>
 </nav>

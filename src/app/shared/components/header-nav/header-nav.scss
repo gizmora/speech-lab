@@ -1,7 +1,12 @@
-
-
 a#logo-title-link {
   text-decoration: none;
   color: black;
   font-size: 1.5rem;
 }
+
+@media (min-width: 768px) {
+  .w-md-50 {
+    width: 50%;
+  }
+}
+
