@@ -1,7 +1,15 @@
 @for (speech of speeches; track speech.id) {
-<div class="py-3 px-4 border-bottom text-secondary" (click)="selectSpeech(speech)" [class]="speech.id === selectedId ? 'bg-light text-black' : ''">
-  <h5 id="speech-title">{{ speech.title }}</h5>
-  <p class="mb-1"><strong>By: </strong> {{ speech.author }}</p>
-  <small>{{ speech.date }}</small>
+<div class="py-3 px-4 border-bottom text-secondary speech-list-item" (click)="selectSpeech(speech)" [class]="speech.id === selectedId ? 'bg-light text-black' : ''">
+  <h5 class="speech-title"><strong>{{ speech.title }}</strong></h5>
+  
+  <p class="mb-3 author"><i class="bi bi-person me-1"></i>{{ speech.author }} | <small><i class="bi bi-calendar-event-fill mx-1"></i>{{ speech.date | date:'MMM dd, yyyy' }}</small></p>
+  @if (showContent){
+  <p class="mb-1">{{speech.content}}</p>
+  }
+  <p class="mb-1">
+    @for (keyword of speech.keywords; track keyword) {
+      <span class="me-1 keywords">{{ keyword }}</span>
+    }
+  </p>
 </div>
 }
